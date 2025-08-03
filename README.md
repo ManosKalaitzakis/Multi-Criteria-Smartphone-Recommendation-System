@@ -1,83 +1,111 @@
-# Multi-Criteria-Smartphone-Recommendation-System
-A complete platform for recommending smartphones tailored to the Greek market. It combines web scraping for data collection, topic modeling (LDA) to analyze reviews, and multi-criteria decision-making (UTA methods) to rank and suggest the best smartphones based on multiple factors and user preferences.
+# Multi-Criteria Smartphone Recommendation System
 
-This project implements a **smartphone recommendation platform** using data scraping, topic modeling (LDA), and multi-criteria decision-making (MCDA), tailored for the Greek market.
+This project is part of a **Diploma Thesis** submitted to the **Technical University of Crete (TUC)**.  
+You can access the thesis here: [TUC Digital Library – Multi-Criteria Smartphone Recommendation System](https://dias.library.tuc.gr/view/92456)
 
----
+This is a complete end-to-end platform for recommending smartphones tailored to the Greek market. It combines:
 
-## 🔧 Components
-
-### 1. DataRetriever - Web Scraping Engine
-Extracts specifications and reviews for smartphones from Greek e-commerce sources.
-
-- **Language**: Python + Selenium + BeautifulSoup  
-- **Input**: UrlKinhtwn.txt (list of product URLs)  
-- **Output**: kinhta25.xlsx with specs and review data  
-- **Features**:  
-  - Custom parser for RAM, CPU, display, etc.  
-  - Dual-sheet Excel output  
+- Web scraping of smartphone specs and user reviews  
+- Topic modeling (LDA) to extract latent themes from reviews  
+- Multi-Criteria Decision Analysis (MCDA) using UTA-based methods  
+- Personalized recommendations based on user-defined preferences and constraints
 
 ---
 
-### 2. LDA - Topic Modeling of Reviews
-Analyzes review texts to extract common themes using LDA (Latent Dirichlet Allocation).
+## System Components
 
-- **Libraries**: Gensim, NLTK, pyLDAvis  
-- **Data**: kinhta25.xlsx, stopwords_el.txt  
-- **Output**:  
-  - LDA_clusters.xlsx: Topic assignments  
-  - Visualizations via pyLDAvis  
-- **Custom logic**:  
-  - Uses MALLET backend for improved LDA  
-  - Levenshtein distance for similarity detection  
+### 1. DataRetriever – Web Scraping Engine
 
----
+Scrapes specifications and user reviews for smartphones from Greek e-commerce sources.
 
-### 3. Agent_Allocator - Personalized Recommendation Engine
-Allocates smartphones based on user preferences using weighted criteria.
+**Tech Stack**: Python, Selenium, BeautifulSoup
 
-- **Excel Files**:
-  - Apaithseis_Xrhsth.xlsx: User preferences  
-  - kritiria.xlsx: Decision criteria weights  
-  - xarakthristika_kinhtwn.xlsx: All phone specs  
-  - dedomena_apokleismou.xlsx: Filters  
-- **Logic**:
-  - Reads from Excel sheets
-  - Computes scores based on selected features
-  - Applies brand filters
-- **Output**: Ranked list of phones best matching user profile
+**Input**: `UrlKinhtwn.txt` (URLs of product pages)  
+**Output**: `kinhta25.xlsx` (Excel with two sheets: specs + reviews)
+
+**Features**:
+- Custom parsers for specs like CPU, RAM, screen size, etc.  
+- Robust extraction of Greek-language review text  
+- Multi-sheet Excel export
 
 ---
 
-### 4. Utastar Utilities Calculator - Multi-Criteria Evaluation with UTA Methods
-Implements UTA, UTASTAR, and UTADIS decision-making algorithms.
+### 2. LDA – Topic Modeling of Review Text
 
-- **Main script**: UtastarUtilitiesCalcuator.py  
-- **Helper modules**:
-  - utamethods.py: Base utility functions  
-  - utautastarfunctions.py: UTASTAR logic  
-  - utadisfunctions.py: UTADIS logic  
-  - filters.py: Constraint filters  
-- **Notebook**: MultiCrit-tutorial.ipynb (example/tutorial)  
-- **Inputs**:
-  - xarakthristika_kinhtwn.xlsx: Specs  
-  - bathmologies_kinhtwn_sunolou_agoras.xlsx: Full market scores  
-  - bathmologies_kinhtwn_sunolou_anaforas.xlsx: Reference scores  
-- **Output**: Results.xlsx (utility values and rankings)
+Performs Latent Dirichlet Allocation (LDA) to uncover recurring topics in user reviews.
+
+**Libraries**: Gensim, NLTK, pyLDAvis, Levenshtein  
+**Input**: `kinhta25.xlsx`, `stopwords_el.txt`  
+**Output**: 
+- `LDA_clusters.xlsx` with topic assignments
+- Visualizations saved in the `Screenshots/` folder
+
+#### Visual Examples
+
+**Most common words after cleaning**  
+![Most Common Words](Screenshots/MostCommonWords.png)
+
+**LDA topic clusters (pyLDAvis output)**  
+![LDA Clusters](Screenshots/LDA%20Clusters.png)
+
+**Top words per topic with probability**  
+![Cluster Words](Screenshots/LDA%20Cluser%20Words.png)
 
 ---
 
-## 📊 Data Flow Diagram
+### 3. Agent_Allocator – Personalized Recommendation Engine
 
-![Data Flow](Διάγραμμα%20Δεδομένων.png)
+Allocates smartphones to users based on preference matching and constraints.
+
+**Input Excel Files**:
+- `Apaithseis_Xrhsth.xlsx`: User preferences
+- `kritiria.xlsx`: Weights for each decision criterion
+- `xarakthristika_kinhtwn.xlsx`: All available smartphone specs
+- `dedomena_apokleismou.xlsx`: Brand or model exclusions
+
+**Logic**:
+- Applies user-defined weights to key features  
+- Computes overall compatibility scores  
+- Filters based on brand, feature, or price constraints  
+**Output**: Ranked smartphone recommendations
 
 ---
 
-## 🗂️ Folder Structure
+### 4. Utastar Utilities Calculator – UTA-Based MCDA Engine
 
+Implements UTA, UTASTAR, and UTADIS algorithms to evaluate products across multiple criteria.
+
+**Main Script**: `UtastarUtilitiesCalcuator.py`  
+**Helper Modules**:  
+- `utamethods.py`, `utautastarfunctions.py`, `utadisfunctions.py`, `filters.py`  
+- Tutorial notebook: `MultiCrit-tutorial.ipynb`
+
+**Inputs**:
+- `xarakthristika_kinhtwn.xlsx`: Smartphone characteristics  
+- `bathmologies_kinhtwn_sunolou_agoras.xlsx`: Market-wide ratings  
+- `bathmologies_kinhtwn_sunolou_anaforas.xlsx`: Reference product ratings  
+
+**Output**: `Results.xlsx` with calculated utilities and rankings
+
+---
+
+## Data Flow Diagram
+
+![Data Flow](Screenshots/Διάγραμμα%20Δεδομένων.png)
+
+---
+
+## Folder Structure
+
+```bash
 .
+├── Agent_Allocator/
 ├── DataRetriever/
 ├── LDA/
-├── Agent_Allocator/
 ├── UtastarUtilitiesCalcuator/
+├── Screenshots/
+│   ├── MostCommonWords.png
+│   ├── LDA Clusters.png
+│   ├── LDA Cluser Words.png
 ├── Διάγραμμα Δεδομένων.png
+├── README.md
